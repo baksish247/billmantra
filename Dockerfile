@@ -14,6 +14,18 @@ RUN npm install
 COPY . .
 
 # Build the Next.js app
+# Pass build-time arguments to the build process
+ARG NEXT_PUBLIC_BACKEND_URL
+ARG NEXT_PUBLIC_API_VERSION
+ARG NEXT_PUBLIC_NAME
+ARG NEXT_PUBLIC_DUMPER_API_KEY
+
+# Set environment variables for build
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_API_VERSION=$NEXT_PUBLIC_API_VERSION
+ENV NEXT_PUBLIC_NAME=$NEXT_PUBLIC_NAME
+ENV NEXT_PUBLIC_DUMPER_API_KEY=$NEXT_PUBLIC_DUMPER_API_KEY
+
 RUN npm run build
 
 # Stage 2: Run the app with a lightweight image
@@ -27,6 +39,11 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
+# Set environment variables for runtime
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_API_VERSION=$NEXT_PUBLIC_API_VERSION
+ENV NEXT_PUBLIC_NAME=$NEXT_PUBLIC_NAME
+ENV NEXT_PUBLIC_DUMPER_API_KEY=$NEXT_PUBLIC_DUMPER_API_KEY
 
 # Expose port 3000 (Next.js default)
 EXPOSE 3000
