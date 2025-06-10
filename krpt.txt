@@ -1,3 +1,0 @@
-NEXT_PUBLIC_BACKEND_URL=https://kartiq-v1.onrender.com
-NEXT_PUBLIC_API_VERSION=/api/v1
-NEXT_PUBLIC_NAME = 'Shopkeeper'
